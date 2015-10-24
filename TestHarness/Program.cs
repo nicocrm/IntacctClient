@@ -8,12 +8,8 @@ namespace TestHarness
 {
 	internal class Program
 	{
-		private static void Main(string[] args)
+		private static void Main()
 		{
-			//			var serverUri = new Uri("https://api.intacct.com/ia/xml/xmlgw.phtml");
-			//			var serverCredential = new NetworkCredential("TG", "VFFefyK1A2");
-			//			var userCredential = new IntacctUserCredential("TG-DEV", "admin", "Test2Test!");
-
 			var settings = LoadSettings();
 
 			var serverUri = new Uri(settings.ServerUri);

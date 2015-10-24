@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace IntacctClient
+namespace Intacct
 {
 	public abstract class IntacctOperationResult
 	{

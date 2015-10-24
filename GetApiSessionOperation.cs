@@ -2,7 +2,7 @@
 using System.Xml.Linq;
 using System.Linq;
 
-namespace IntacctClient
+namespace Intacct
 {
 	public class GetApiSessionOperation : IntacctOperationBase
 	{
@@ -13,6 +13,7 @@ namespace IntacctClient
 		protected override XElement CreateOperationContents()
 		{
 			return new XElement("function",
+			                    new XAttribute("controlid", "api"),
 			                    new XElement("getAPISession"));
 		}
 

@@ -1,7 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntacctClient", "IntacctClient.csproj", "{941DD88F-BD05-44FD-846D-71B09EA22CAB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestHarness", "TestHarness\TestHarness.csproj", "{6FC88845-2077-4792-BAB7-C436A9A29A89}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,5 +17,12 @@ Global
 		{941DD88F-BD05-44FD-846D-71B09EA22CAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{941DD88F-BD05-44FD-846D-71B09EA22CAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{941DD88F-BD05-44FD-846D-71B09EA22CAB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FC88845-2077-4792-BAB7-C436A9A29A89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FC88845-2077-4792-BAB7-C436A9A29A89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FC88845-2077-4792-BAB7-C436A9A29A89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FC88845-2077-4792-BAB7-C436A9A29A89}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

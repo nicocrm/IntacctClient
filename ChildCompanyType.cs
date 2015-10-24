@@ -1,4 +1,4 @@
-namespace IntacctClient
+namespace Intacct
 {
 	public enum ChildCompanyType
 	{

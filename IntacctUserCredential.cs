@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 
-namespace IntacctClient
+namespace Intacct
 {
 	public class IntacctUserCredential : NetworkCredential
 	{
@@ -13,14 +13,14 @@ namespace IntacctClient
 		{
 		}
 
-		private IntacctUserCredential(string companyId, string userName, string password, string childCompanyId, ChildCompanyType childCompanyType) : this(companyId, userName, password, childCompanyId, (ChildCompanyType?) childCompanyType)
+		public IntacctUserCredential(string companyId, string userName, string password, string childCompanyId, ChildCompanyType childCompanyType) : this(companyId, userName, password, childCompanyId, (ChildCompanyType?) childCompanyType)
 		{
 		}
 
 		private IntacctUserCredential(string companyId, string userName, string password, string childCompanyId = null, ChildCompanyType? childCompanyType = null) : base(userName, password)
 		{
-			if (companyId == null) throw new ArgumentNullException("companyId");
-			if (childCompanyId != null && childCompanyType == null) throw new ArgumentNullException("childCompanyType");
+			if (companyId == null) throw new ArgumentNullException(nameof(companyId));
+			if (childCompanyId != null && childCompanyType == null) throw new ArgumentNullException(nameof(childCompanyType));
 		
 			CompanyId = companyId;
 			ChildCompanyId = childCompanyId;

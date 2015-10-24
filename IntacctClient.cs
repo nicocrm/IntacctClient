@@ -1,19 +1,21 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace IntacctClient
+namespace Intacct
 {
 	public class IntacctClient
 	{
-		readonly Uri _apiUri;
-		readonly NetworkCredential _serviceCredential;
+		private readonly Uri _apiUri;
+		private readonly NetworkCredential _serviceCredential;
 
 		public IntacctClient(Uri apiUri, NetworkCredential serviceCredential)
 		{
@@ -34,6 +36,10 @@ namespace IntacctClient
 			var body = ConstructRequestBody(requestId, new[] { operation });
 
 			var response = await ExecuteRequest(body, token, _apiUri);
+			if (!response.Success)
+			{
+				throw new IntacctServiceException(response);
+			}
 
 			// expecting a single operation result
 			var result = response.OperationResults.OfType<IntacctOperationResult<IntacctSession>>().Single();
@@ -43,14 +49,20 @@ namespace IntacctClient
 
 		private string ConstructRequestBody(string requestId, IEnumerable<IntacctOperationBase> operations)
 		{
-			var doc = new XDocument(new XDeclaration("1.0", "UTF-8", null));
+			var doc = new XDocument { Declaration = new XDeclaration("1.0", "UTF-8", null) };
 
 			var request = new XElement("request",
 			                           GetControlElement(_serviceCredential, requestId));
 			request.Add(operations.Select(op => op.GetOperationElement()));
 
 			doc.Add(request);
-			return doc.ToString();
+
+			var builder = new StringBuilder();
+			using (var writer = new StringWriter(builder))
+			{
+				doc.Save(writer);
+			}
+			return builder.ToString();
 		}
 
 		private static XElement GetControlElement(NetworkCredential serviceCredential, string requestId)
@@ -58,7 +70,8 @@ namespace IntacctClient
 			var control = new XElement("control",
 			                       new XElement("senderid", serviceCredential.UserName),
 			                       new XElement("password", serviceCredential.Password),
-			                       new XElement("controlid", requestId));
+			                       new XElement("controlid", requestId),
+								   new XElement("dtdversion", "3.0"));
 
 			return control;
 		}
@@ -66,12 +79,12 @@ namespace IntacctClient
 		private async Task<IntacctServiceResponse> ExecuteRequest(string body, CancellationToken token, Uri uri = null)
 		{
 			uri = uri ?? _apiUri;
-
+			
 			using (var client = new HttpClient())
 			{
 				// set up the content for the request
 				var content = new StringContent(body);
-				content.Headers.ContentType = new MediaTypeHeaderValue("x-intacct-xml-request");
+				content.Headers.ContentType = new MediaTypeHeaderValue("application/x-intacct-xml-request");
 
 				// execute request and throw if response is not a success code
 				var response = await client.PostAsync(uri, content, token);
@@ -80,7 +93,9 @@ namespace IntacctClient
 				// process response
 				using (var stream = await response.Content.ReadAsStreamAsync())
 				{
-					return new IntacctServiceResponse();
+					var doc = XDocument.Load(stream);
+
+					return ResponseParser.Parse(doc);
 				}
 			}
 		}

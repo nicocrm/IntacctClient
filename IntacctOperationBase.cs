@@ -1,7 +1,7 @@
 using System;
 using System.Xml.Linq;
 
-namespace IntacctClient
+namespace Intacct
 {
 	public abstract class IntacctOperationBase
 	{

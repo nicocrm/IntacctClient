@@ -1,6 +1,6 @@
 using System;
 
-namespace IntacctClient
+namespace Intacct
 {
 	public class IntacctSession
 	{

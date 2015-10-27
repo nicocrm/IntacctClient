@@ -3,7 +3,7 @@ using System.Xml.Linq;
 
 namespace Intacct.Operations
 {
-	internal interface IIntacctOperation
+	public interface IIntacctOperation
 	{
 		string FunctionName { get; }
 		string Id { get; }
@@ -17,18 +17,23 @@ namespace Intacct.Operations
 	{
 		private readonly IntacctUserCredential _userCredential;
 		private readonly IntacctSession _session;
+		private readonly string _resultElementName;
 
 		public string FunctionName { get; }
 		public string Id { get; } = Guid.NewGuid().ToString();
 
-
-		protected IntacctOperationBase(IntacctUserCredential userCredential, string functionName)
+		private IntacctOperationBase(string functionName, string resultElementName)
 		{
-			_userCredential = userCredential;
 			FunctionName = functionName;
+			_resultElementName = resultElementName;
 		}
 
-		protected IntacctOperationBase(IntacctSession session)
+		protected IntacctOperationBase(IntacctUserCredential userCredential, string functionName, string resultElementName) : this(functionName, resultElementName)
+		{
+			_userCredential = userCredential;
+		}
+
+		protected IntacctOperationBase(IntacctSession session, string functionName, string resultElementName) : this(functionName, resultElementName)
 		{
 			_session = session;
 		}
@@ -55,11 +60,13 @@ namespace Intacct.Operations
 			}
 
 			// parse data
-			var dataElement = resultElement.Element("data");
-			return ProcessResponseData(dataElement);
+			var dataElement = resultElement.Element(_resultElementName);
+			if (dataElement != null) return ProcessResponseData(dataElement);
+
+			throw new Exception($"Element {_resultElementName} was not found in response.");
 		}
 
-		protected abstract XElement CreateFunctionContents();
+		protected abstract XObject[] CreateFunctionContents();
 
 		protected abstract IntacctOperationResult<T> ProcessResponseData(XElement responseData);
 

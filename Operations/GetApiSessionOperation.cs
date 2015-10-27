@@ -6,7 +6,7 @@ namespace Intacct.Operations
 {
 	public class GetApiSessionOperation : IntacctOperationBase<IntacctSession>
 	{
-		public GetApiSessionOperation(IntacctUserCredential cred) : base(cred, "getAPISession")
+		public GetApiSessionOperation(IntacctUserCredential cred) : base(cred, "getAPISession", "data")
 		{
 		}
 
@@ -20,7 +20,7 @@ namespace Intacct.Operations
 			return new IntacctOperationResult<IntacctSession>(session);
 		}
 
-		protected override XElement CreateFunctionContents()
+		protected override XObject[] CreateFunctionContents()
 		{
 			// do nothing no op required
 			return null;

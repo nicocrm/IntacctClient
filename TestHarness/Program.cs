@@ -1,7 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Threading;
 using Intacct;
+using Intacct.Entities;
+using Intacct.Operations;
 using Newtonsoft.Json;
 
 namespace TestHarness
@@ -19,6 +22,15 @@ namespace TestHarness
 			var client = new IntacctClient(serverUri, serverCredential);
 
 			var session = client.InitiateApiSession(userCredential).Result;
+
+			var customer = new IntacctCustomer
+			{
+				Id = "C0003",
+				ExternalId = "1337",
+				Name = "MT Test " + Guid.NewGuid().ToString(),
+				PrimaryContact = new IntacctContact { Name = Guid.NewGuid().ToString() }
+			};
+			var response = client.ExecuteOperations(new[] { new CreateCustomerOperation(session, customer) }, CancellationToken.None).Result;
 
 			Console.WriteLine(session.SessionId);
 			Console.WriteLine(session.EndpointUri);

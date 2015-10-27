@@ -36,8 +36,21 @@ namespace Intacct
 
 			using (var requestStream = new MemoryStream())
 			{
-				// construct request
+				// construct and execute request
 				var operations = new[] { operation };
+				var response = await ExecuteOperations(operations, token);
+
+				// expecting a single operation result
+				var result = response.OperationResults.OfType<IntacctOperationResult<IntacctSession>>().Single();
+
+				return result.Value;
+			}
+		}
+
+		public async Task<IntacctServiceResponse> ExecuteOperations(IEnumerable<IIntacctOperation> operations, CancellationToken token)
+		{
+			using (var requestStream = new MemoryStream())
+			{
 				ConstructRequestBody(requestStream, Guid.NewGuid().ToString(), operations);
 
 				// execute request
@@ -47,10 +60,7 @@ namespace Intacct
 					throw new IntacctServiceException(response);
 				}
 
-				// expecting a single operation result
-				var result = response.OperationResults.OfType<IntacctOperationResult<IntacctSession>>().Single();
-
-				return result.Value;
+				return response;
 			}
 		}
 

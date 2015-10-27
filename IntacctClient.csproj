@@ -35,15 +35,15 @@
     <Compile Include="IntacctServiceException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ChildCompanyType.cs" />
-    <Compile Include="GetApiSessionOperation.cs" />
+    <Compile Include="Operations\GetApiSessionOperation.cs" />
     <Compile Include="IntacctClient.cs" />
-    <Compile Include="IntacctObject.cs" />
+    <Compile Include="Entities\IntacctObject.cs" />
     <Compile Include="IntacctSession.cs" />
     <Compile Include="IntacctUserCredential.cs" />
-    <Compile Include="IntacctOperationBase.cs" />
-    <Compile Include="IntacctAuthenticatedOperationBase.cs" />
+    <Compile Include="Operations\IntacctOperationBase.cs" />
+    <Compile Include="Operations\IntacctAuthenticatedOperationBase.cs" />
     <Compile Include="IntacctServiceResponse.cs" />
-    <Compile Include="IntacctOperationResult.cs" />
+    <Compile Include="Operations\IntacctOperationResult.cs" />
     <Compile Include="IntacctError.cs" />
     <Compile Include="ResponseParser.cs" />
   </ItemGroup>

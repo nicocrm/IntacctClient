@@ -2,7 +2,7 @@
 using System.Xml.Linq;
 using System.Linq;
 
-namespace Intacct
+namespace Intacct.Operations
 {
 	public class GetApiSessionOperation : IntacctOperationBase<IntacctSession>
 	{

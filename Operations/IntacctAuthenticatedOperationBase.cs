@@ -1,4 +1,4 @@
-﻿namespace Intacct
+﻿namespace Intacct.Operations
 {
 	public abstract class IntacctAuthenticatedOperationBase<T> : IntacctOperationBase<T>
 	{

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Intacct.Operations;
 
 namespace Intacct
 {

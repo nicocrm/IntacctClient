@@ -1,7 +1,7 @@
 using System;
 using System.Xml.Linq;
 
-namespace Intacct
+namespace Intacct.Operations
 {
 	internal interface IIntacctOperation
 	{

@@ -3,14 +3,29 @@ using System.Xml.Linq;
 
 namespace Intacct
 {
-	public abstract class IntacctOperationBase
+	internal interface IIntacctOperation
+	{
+		string FunctionName { get; }
+		string Id { get; }
+
+		XElement GetOperationElement();
+
+		IntacctOperationResult ProcessResult(XElement resultElement);
+    }
+
+	public abstract class IntacctOperationBase<T> : IIntacctOperation
 	{
 		private readonly IntacctUserCredential _userCredential;
 		private readonly IntacctSession _session;
 
-		protected IntacctOperationBase(IntacctUserCredential userCredential)
+		public string FunctionName { get; }
+		public string Id { get; } = Guid.NewGuid().ToString();
+
+
+		protected IntacctOperationBase(IntacctUserCredential userCredential, string functionName)
 		{
 			_userCredential = userCredential;
+			FunctionName = functionName;
 		}
 
 		protected IntacctOperationBase(IntacctSession session)
@@ -21,13 +36,32 @@ namespace Intacct
 		public XElement GetOperationElement()
 		{
 			return new XElement("operation",
-			                    CreateAuthElement(),
-			                    new XElement("content", CreateOperationContents()));
+								CreateAuthElement(),
+								new XElement("content",
+											 new XElement("function",
+														  new XAttribute("controlid", Id),
+														  new XElement(FunctionName,
+																	   CreateFunctionContents()))));
 		}
 
-		protected abstract XElement CreateOperationContents();
+		public IntacctOperationResult ProcessResult(XElement resultElement)
+		{
+			// check operation status
+			var success = resultElement.Element("status").Value == "success";
+			if (!success)
+			{
+				var errorMessageElement = resultElement.Element("errormessage");
+				return IntacctOperationResult<T>.CreateFailure(ResponseParser.ParseErrors(errorMessageElement));
+			}
 
-		protected abstract IntacctOperationResult<IntacctSession> ProcessResponseData(XElement responseData);
+			// parse data
+			var dataElement = resultElement.Element("data");
+			return ProcessResponseData(dataElement);
+		}
+
+		protected abstract XElement CreateFunctionContents();
+
+		protected abstract IntacctOperationResult<T> ProcessResponseData(XElement responseData);
 
 		private XElement CreateAuthElement()
 		{

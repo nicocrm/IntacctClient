@@ -8,6 +8,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Xml;
 using System.Xml.Linq;
 
 namespace Intacct
@@ -32,24 +33,29 @@ namespace Intacct
 		{
 			var operation = new GetApiSessionOperation(cred);
 
-			var requestId = Guid.NewGuid().ToString();
-			var body = ConstructRequestBody(requestId, new[] { operation });
-
-			var response = await ExecuteRequest(body, token, _apiUri);
-			if (!response.Success)
+			using (var requestStream = new MemoryStream())
 			{
-				throw new IntacctServiceException(response);
+				// construct request
+				var operations = new[] { operation };
+				ConstructRequestBody(requestStream, Guid.NewGuid().ToString(), operations);
+
+				// execute request
+				var response = await ExecuteRequest(requestStream, operations, token, _apiUri);
+				if (!response.Success)
+				{
+					throw new IntacctServiceException(response);
+				}
+
+				// expecting a single operation result
+				var result = response.OperationResults.OfType<IntacctOperationResult<IntacctSession>>().Single();
+
+				return result.Value;
 			}
-
-			// expecting a single operation result
-			var result = response.OperationResults.OfType<IntacctOperationResult<IntacctSession>>().Single();
-
-			return result.Value;
 		}
 
-		private string ConstructRequestBody(string requestId, IEnumerable<IntacctOperationBase> operations)
+		private void ConstructRequestBody(Stream stream, string requestId, IEnumerable<IIntacctOperation> operations)
 		{
-			var doc = new XDocument { Declaration = new XDeclaration("1.0", "UTF-8", null) };
+			var doc = new XDocument();
 
 			var request = new XElement("request",
 			                           GetControlElement(_serviceCredential, requestId));
@@ -57,12 +63,14 @@ namespace Intacct
 
 			doc.Add(request);
 
-			var builder = new StringBuilder();
-			using (var writer = new StringWriter(builder))
+			using (var writer = XmlWriter.Create(stream, new XmlWriterSettings { Encoding = Encoding.UTF8, CloseOutput = false }))
 			{
 				doc.Save(writer);
+				writer.Flush();
 			}
-			return builder.ToString();
+
+			// rewind stream
+			stream.Seek(0, SeekOrigin.Begin);
 		}
 
 		private static XElement GetControlElement(NetworkCredential serviceCredential, string requestId)
@@ -71,19 +79,20 @@ namespace Intacct
 			                       new XElement("senderid", serviceCredential.UserName),
 			                       new XElement("password", serviceCredential.Password),
 			                       new XElement("controlid", requestId),
+								   new XElement("uniqueid", "false"),
 								   new XElement("dtdversion", "3.0"));
 
 			return control;
 		}
 
-		private async Task<IntacctServiceResponse> ExecuteRequest(string body, CancellationToken token, Uri uri = null)
+		private async Task<IntacctServiceResponse> ExecuteRequest(Stream requestStream, IEnumerable<IIntacctOperation> operations, CancellationToken token, Uri uri = null)
 		{
 			uri = uri ?? _apiUri;
 			
 			using (var client = new HttpClient())
 			{
 				// set up the content for the request
-				var content = new StringContent(body);
+				var content = new StreamContent(requestStream);
 				content.Headers.ContentType = new MediaTypeHeaderValue("application/x-intacct-xml-request");
 
 				// execute request and throw if response is not a success code
@@ -91,11 +100,11 @@ namespace Intacct
 				response.EnsureSuccessStatusCode();
 
 				// process response
-				using (var stream = await response.Content.ReadAsStreamAsync())
+				using (var responseStream = await response.Content.ReadAsStreamAsync())
 				{
-					var doc = XDocument.Load(stream);
+					var doc = XDocument.Load(responseStream);
 
-					return ResponseParser.Parse(doc);
+					return ResponseParser.Parse(doc, operations);
 				}
 			}
 		}

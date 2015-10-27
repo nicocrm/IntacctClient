@@ -4,17 +4,10 @@ using System.Linq;
 
 namespace Intacct
 {
-	public class GetApiSessionOperation : IntacctOperationBase
+	public class GetApiSessionOperation : IntacctOperationBase<IntacctSession>
 	{
-		public GetApiSessionOperation(IntacctUserCredential cred) : base(cred)
+		public GetApiSessionOperation(IntacctUserCredential cred) : base(cred, "getAPISession")
 		{
-		}
-
-		protected override XElement CreateOperationContents()
-		{
-			return new XElement("function",
-			                    new XAttribute("controlid", "api"),
-			                    new XElement("getAPISession"));
 		}
 
 		protected override IntacctOperationResult<IntacctSession> ProcessResponseData(XElement responseData)
@@ -25,6 +18,12 @@ namespace Intacct
 
 			var session = new IntacctSession(sessionId, new Uri(endpoint));
 			return new IntacctOperationResult<IntacctSession>(session);
+		}
+
+		protected override XElement CreateFunctionContents()
+		{
+			// do nothing no op required
+			return null;
 		}
 	}
 }

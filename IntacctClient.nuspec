@@ -1,14 +1,23 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>IntacctClient</id>
     <version>0.0.0</version>
-	<dependencies>
-	  <group targetFramework="dotnet">
-		<dependency id="System.IO" version="4.0.10"/>
-		<dependency id="System.Runtime" version="4.0.20"/>
-	  </group>
-	</dependencies>
+    <dependencies>
+      <group targetFramework="dotnet">
+        <dependency id="System.Collections" version="4.0.10" />
+        <dependency id="System.Diagnostics.Debug" version="4.0.10" />
+        <dependency id="System.IO" version="4.0.10" />
+        <dependency id="System.Linq" version="4.0.0" />
+        <dependency id="System.Net.Http" version="4.0.0" />
+        <dependency id="System.Net.Primitives" version="4.0.10" />
+        <dependency id="System.Runtime" version="4.0.20" />
+        <dependency id="System.Text.Encoding" version="4.0.10" />
+        <dependency id="System.Threading.Tasks" version="4.0.10" />
+        <dependency id="System.Xml.ReaderWriter" version="4.0.10" />
+        <dependency id="System.Xml.XDocument" version="4.0.10" />
+      </group>
+    </dependencies>
     <title>Intacct Web Services Client</title>
     <authors>Michael Teper</authors>
     <owners>Michael Teper</owners>
@@ -22,6 +31,6 @@
     </releaseNotes>
   </metadata>
   <files>
-	<file src="bin\Release\*.*" target="lib\dotnet" />
+    <file src="bin\Release\*.*" target="lib\dotnet" />
   </files>
 </package>

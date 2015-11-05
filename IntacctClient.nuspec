@@ -21,4 +21,7 @@
 		Initial release, containing support for creation of a customer record.
     </releaseNotes>
   </metadata>
+  <files>
+	<file src="bin\Release\*.*" target="lib\dotnet" />
+  </files>
 </package>

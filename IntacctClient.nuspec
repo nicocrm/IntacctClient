@@ -3,12 +3,12 @@
   <metadata>
     <id>IntacctClient</id>
     <version>0.0.1</version>
-	<depenedencies>
+	<dependencies>
 	  <group targetFramework="dotnet">
 		<dependency id="System.IO" version="4.0.10"/>
 		<dependency id="System.Runtime" version="4.0.20"/>
 	  </group>
-	</depenedencies>
+	</dependencies>
     <title>Intacct Web Services Client</title>
     <authors>Michael Teper</authors>
     <owners>Michael Teper</owners>

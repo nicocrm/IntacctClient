@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>IntacctClient</id>
+    <version>0.0.1</version>
+    <title>Intacct Web Services Client</title>
+    <authors>Michael Teper</authors>
+    <owners>Michael Teper</owners>
+    <licenseUrl>https://opensource.org/licenses/MIT</licenseUrl>
+    <projectUrl>https://github.com/el-loco/IntacctClient</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>.Net library for working with Intacct web services.</description>
+    <tags>Intacct</tags>
+    <releaseNotes>
+		Initial release, containing support for creation of a customer record.
+    </releaseNotes>
+  </metadata>
+</package>

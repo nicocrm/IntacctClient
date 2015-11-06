@@ -22,4 +22,4 @@ build:
   parallel: true
 
 after_build:    
-  - cmd: nuget pack IntacctClient.nuspec -version "{version}" -prop "target=%CONFIGURATION%"
+  - cmd: nuget pack IntacctClient.nuspec -version "%APPVEYOR_BUILD_VERSION%" -prop "target=%CONFIGURATION%"

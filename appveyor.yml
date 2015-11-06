@@ -23,3 +23,6 @@ build:
 
 after_build:    
   - cmd: nuget pack IntacctClient.nuspec -version "%APPVEYOR_BUILD_VERSION%" -prop "target=%CONFIGURATION%"
+
+artifacts:
+  - path: '**\*.nupkg' # find all NuGet packages recursively

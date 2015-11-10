@@ -3,21 +3,6 @@
   <metadata>
     <id>IntacctClient</id>
     <version>0.0.0</version>
-    <dependencies>
-      <group targetFramework="dotnet">
-        <dependency id="System.Collections" version="4.0.10" />
-        <dependency id="System.Diagnostics.Debug" version="4.0.10" />
-        <dependency id="System.IO" version="4.0.10" />
-        <dependency id="System.Linq" version="4.0.0" />
-        <dependency id="System.Net.Http" version="4.0.0" />
-        <dependency id="System.Net.Primitives" version="4.0.10" />
-        <dependency id="System.Runtime" version="4.0.20" />
-        <dependency id="System.Text.Encoding" version="4.0.10" />
-        <dependency id="System.Threading.Tasks" version="4.0.10" />
-        <dependency id="System.Xml.ReaderWriter" version="4.0.10" />
-        <dependency id="System.Xml.XDocument" version="4.0.10" />
-      </group>
-    </dependencies>
     <title>Intacct Web Services Client</title>
     <authors>Michael Teper</authors>
     <owners>Michael Teper</owners>
@@ -27,7 +12,7 @@
     <description>.Net library for working with Intacct web services.</description>
     <tags>Intacct</tags>
     <releaseNotes>
-		Initial release, containing support for creation of a customer record.
+		  Removed support for UWP10 as it conflicted with Azure builds.
     </releaseNotes>
   </metadata>
   <files>

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Intacct.Operations;
 
 namespace Intacct
@@ -10,9 +11,9 @@ namespace Intacct
 
 		public bool Success { get; private set; }
 
-		public IReadOnlyCollection<IntacctError> Errors => _errors.AsReadOnly();
+		public IReadOnlyList<IntacctError> Errors => new ReadOnlyCollection<IntacctError>(_errors);
 
-		public IReadOnlyCollection<IntacctOperationResult> OperationResults => _operationResults.AsReadOnly();
+		public IReadOnlyList<IntacctOperationResult> OperationResults => new ReadOnlyCollection<IntacctOperationResult>(_operationResults);
 
 		public static IntacctServiceResponse Failed => new IntacctServiceResponse { Success = false };
 		public static IntacctServiceResponse Successful => new IntacctServiceResponse { Success = true };

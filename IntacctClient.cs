@@ -47,7 +47,7 @@ namespace Intacct
 			}
 		}
 
-		public virtual async Task<IntacctServiceResponse> ExecuteOperations(IEnumerable<IIntacctOperation> operations, CancellationToken token)
+		public virtual async Task<IIntacctServiceResponse> ExecuteOperations(IEnumerable<IIntacctOperation> operations, CancellationToken token)
 		{
 			using (var requestStream = new MemoryStream())
 			{
@@ -96,7 +96,7 @@ namespace Intacct
 			return control;
 		}
 
-		private async Task<IntacctServiceResponse> ExecuteRequest(Stream requestStream, IEnumerable<IIntacctOperation> operations, CancellationToken token, Uri uri = null)
+		private async Task<IIntacctServiceResponse> ExecuteRequest(Stream requestStream, IEnumerable<IIntacctOperation> operations, CancellationToken token, Uri uri = null)
 		{
 			uri = uri ?? _apiUri;
 			

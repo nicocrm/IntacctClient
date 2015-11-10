@@ -4,7 +4,7 @@ using Intacct.Operations;
 
 namespace Intacct
 {
-	public class IntacctServiceResponse
+	public class IntacctServiceResponse : IIntacctServiceResponse
 	{
 		private readonly List<IntacctError> _errors = new List<IntacctError>();
 		private readonly List<IntacctOperationResult> _operationResults = new List<IntacctOperationResult>();
@@ -15,8 +15,8 @@ namespace Intacct
 
 		public IReadOnlyList<IntacctOperationResult> OperationResults => new ReadOnlyCollection<IntacctOperationResult>(_operationResults);
 
-		public static IntacctServiceResponse Failed => new IntacctServiceResponse { Success = false };
-		public static IntacctServiceResponse Successful => new IntacctServiceResponse { Success = true };
+		internal static IntacctServiceResponse Failed => new IntacctServiceResponse { Success = false };
+		internal static IntacctServiceResponse Successful => new IntacctServiceResponse { Success = true };
 
 		private IntacctServiceResponse() { }
 
@@ -26,7 +26,7 @@ namespace Intacct
 			Success = false;
 		}
 
-		public void AddErrors(IEnumerable<IntacctError> errors)
+		internal void AddErrors(IEnumerable<IntacctError> errors)
 		{
 			_errors.AddRange(errors);
 			Success = false;

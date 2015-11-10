@@ -1,5 +1,8 @@
 # Change log
 
+## 0.2.0
+ - introduced IIntacctServiceResponse interface to facilitate testing
+
 ## 0.1.0
  - introduced IIntacctSession interface to facilitate testing
 

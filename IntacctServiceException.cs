@@ -4,9 +4,9 @@ namespace Intacct
 {
 	public class IntacctServiceException : Exception
 	{
-		public IntacctServiceResponse Response { get; }
+		public IIntacctServiceResponse Response { get; }
 
-		public IntacctServiceException(IntacctServiceResponse response)
+		public IntacctServiceException(IIntacctServiceResponse response)
 		{
 			if (response == null) throw new ArgumentNullException(nameof(response));
 

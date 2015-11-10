@@ -40,6 +40,7 @@
     <Compile Include="Entities\IntacctAddress.cs" />
     <Compile Include="Entities\IntacctContact.cs" />
     <Compile Include="Entities\IntacctCustomer.cs" />
+    <Compile Include="IIntacctServiceResponse.cs" />
     <Compile Include="IIntacctSession.cs" />
     <Compile Include="IntacctServiceException.cs" />
     <Compile Include="Operations\CreateCustomerOperation.cs" />

@@ -1,5 +1,8 @@
 # Change log
 
+## 0.0.3
+ - made methods on IntacctClient virtual to simplify testing
+
 ## 0.0.2
  - removed support for UWP10 due to conflict with Azure builds
 

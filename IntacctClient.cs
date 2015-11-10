@@ -25,12 +25,12 @@ namespace Intacct
 			_serviceCredential = serviceCredential;
 		}
 
-		public async Task<IntacctSession> InitiateApiSession(IntacctUserCredential cred)
+		public virtual async Task<IntacctSession> InitiateApiSession(IntacctUserCredential cred)
 		{
 			return await InitiateApiSession(cred, CancellationToken.None);
 		}
 
-		public async Task<IntacctSession> InitiateApiSession(IntacctUserCredential cred, CancellationToken token)
+		public virtual async Task<IntacctSession> InitiateApiSession(IntacctUserCredential cred, CancellationToken token)
 		{
 			var operation = new GetApiSessionOperation(cred);
 
@@ -47,7 +47,7 @@ namespace Intacct
 			}
 		}
 
-		public async Task<IntacctServiceResponse> ExecuteOperations(IEnumerable<IIntacctOperation> operations, CancellationToken token)
+		public virtual async Task<IntacctServiceResponse> ExecuteOperations(IEnumerable<IIntacctOperation> operations, CancellationToken token)
 		{
 			using (var requestStream = new MemoryStream())
 			{

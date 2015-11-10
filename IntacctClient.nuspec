@@ -12,7 +12,7 @@
     <description>.Net library for working with Intacct web services.</description>
     <tags>Intacct</tags>
     <releaseNotes>
-		  Removed support for UWP10 as it conflicted with Azure builds.
+      Made methods on IntacctClient virtual to simplify testing.
     </releaseNotes>
   </metadata>
   <files>

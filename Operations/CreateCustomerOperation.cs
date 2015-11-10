@@ -7,7 +7,7 @@ namespace Intacct.Operations
 	{
 		private readonly IntacctCustomer _customer;
 
-		public CreateCustomerOperation(IntacctSession session, IntacctCustomer customer) : base(session, "create_customer", "key")
+		public CreateCustomerOperation(IIntacctSession session, IntacctCustomer customer) : base(session, "create_customer", "key")
 		{
 			_customer = customer;
 		}

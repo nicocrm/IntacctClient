@@ -2,7 +2,7 @@ using System;
 
 namespace Intacct
 {
-	public class IntacctSession
+	public class IntacctSession : IIntacctSession
 	{
 		public string SessionId { get; private set; }
 		public Uri EndpointUri { get; private set; }

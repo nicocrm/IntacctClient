@@ -16,7 +16,7 @@ namespace Intacct.Operations
 	public abstract class IntacctOperationBase<T> : IIntacctOperation
 	{
 		private readonly IntacctUserCredential _userCredential;
-		private readonly IntacctSession _session;
+		private readonly IIntacctSession _session;
 		private readonly string _resultElementName;
 
 		public string FunctionName { get; }
@@ -33,7 +33,7 @@ namespace Intacct.Operations
 			_userCredential = userCredential;
 		}
 
-		protected IntacctOperationBase(IntacctSession session, string functionName, string resultElementName) : this(functionName, resultElementName)
+		protected IntacctOperationBase(IIntacctSession session, string functionName, string resultElementName) : this(functionName, resultElementName)
 		{
 			_session = session;
 		}
@@ -79,7 +79,7 @@ namespace Intacct.Operations
 			return new XElement("authentication", inner);
 		}
 
-		private static XElement CreateAuthSessionElement(IntacctSession session)
+		private static XElement CreateAuthSessionElement(IIntacctSession session)
 		{
 			return new XElement("sessionid", session.SessionId);
 		}

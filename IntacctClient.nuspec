@@ -12,7 +12,7 @@
     <description>.Net library for working with Intacct web services.</description>
     <tags>Intacct</tags>
     <releaseNotes>
-      Throw exception when receiving unexpected response while attempting to establish API session.
+      Improved handling of authentication failures when establishing API session.
     </releaseNotes>
   </metadata>
   <files>

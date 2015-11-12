@@ -44,7 +44,14 @@ namespace Intacct
 				var result = response.OperationResults.OfType<IntacctOperationResult<IntacctSession>>().SingleOrDefault();
 				if (result == null)
 				{
-					throw new IntacctServiceException(response);
+					// let's see what the result is
+					var badResult = response.OperationResults.FirstOrDefault();
+					if (badResult == null) throw new Exception("Unable to initiate API session, and no results were captured.");
+
+					var authError = badResult as IntacctOperationAuthFailedResult;
+					if (authError != null) throw new Exception($"Unable to initiate API session, authentication failed. Service error: {authError.Errors.Select(e => e.ToString()).Aggregate((curr, next) => curr + " " + next)}");
+
+					throw new Exception($"Unable to initiate API session, unexpected result type {badResult.GetType().Name}.");
 				}
 
 				return result.Value;

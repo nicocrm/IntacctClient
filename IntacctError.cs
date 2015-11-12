@@ -26,6 +26,9 @@ namespace Intacct
 			       };
 		}
 
-
+		public override string ToString()
+		{
+			return $"[ Number: {Number ?? "--"}, Description: {Description ?? "--"}, Description2: {Description2 ?? "--"}, Source: {Source ?? "--"}, Correction: {Correction ?? "--"} ]";
+		}
 	}
 }

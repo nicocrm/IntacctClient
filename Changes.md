@@ -1,5 +1,8 @@
 # Change log
 
+## 0.2.2
+ - improved handling of authentication failures when establishing API session
+
 ## 0.2.1
  - throw exception when receiving unexpected response while attempting to establish API session
 

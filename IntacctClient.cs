@@ -40,8 +40,12 @@ namespace Intacct
 				var operations = new[] { operation };
 				var response = await ExecuteOperations(operations, token);
 
-				// expecting a single operation result
-				var result = response.OperationResults.OfType<IntacctOperationResult<IntacctSession>>().Single();
+				// expecting a single operation result (more or less is a problem)
+				var result = response.OperationResults.OfType<IntacctOperationResult<IntacctSession>>().SingleOrDefault();
+				if (result == null)
+				{
+					throw new IntacctServiceException(response);
+				}
 
 				return result.Value;
 			}

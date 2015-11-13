@@ -1,10 +1,12 @@
-﻿using System.Xml.Linq;
+﻿using System;
+using System.Xml.Linq;
 
 namespace Intacct.Entities
 {
 	public class IntacctContact : IntacctObject
 	{
 		public string Name { get; set; }
+		public string PrintAs { get; set; }
 
 		public string Prefix { get; set; }
 		public string FirstName { get; set; }
@@ -22,12 +24,23 @@ namespace Intacct.Entities
 		public string Status { get; set; }
 		public IntacctAddress MailAddress { get; set; }
 
+		public IntacctContact(string name, string printAs)
+		{
+			if (name == null) throw new ArgumentNullException(nameof(name));
+			if (printAs == null) throw new ArgumentNullException(nameof(printAs));
+			if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Argument is null or whitespace", nameof(name));
+			if (string.IsNullOrWhiteSpace(printAs)) throw new ArgumentException("Argument is null or whitespace", nameof(printAs));
+
+			Name = name;
+			PrintAs = printAs;
+		}
+
 		internal override XObject[] ToXmlElements()
 		{
 			return new[]
 			{
 				new XElement("contactname", Name),
-				new XElement("printas", Name),
+				new XElement("printas", PrintAs),
 				new XElement("prefix", Prefix),
 				new XElement("firstname", FirstName),
 				new XElement("lastname", LastName),

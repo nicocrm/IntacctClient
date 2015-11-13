@@ -1,5 +1,8 @@
 # Change log
 
+## 0.3.0
+ - added constructors with required fields for Intacct entities
+
 ## 0.2.2
  - improved handling of authentication failures when establishing API session
 

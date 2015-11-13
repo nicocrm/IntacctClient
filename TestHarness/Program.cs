@@ -23,14 +23,14 @@ namespace TestHarness
 
 			var session = client.InitiateApiSession(userCredential).Result;
 
-			var customer = new IntacctCustomer
+			var customer = new IntacctCustomer("C0003", "MT Test " + Guid.NewGuid())
 			{
-				Id = "C0003",
 				ExternalId = "1337",
-				Name = "MT Test " + Guid.NewGuid().ToString(),
-				PrimaryContact = new IntacctContact { Name = Guid.NewGuid().ToString() }
+				PrimaryContact = new IntacctContact(Guid.NewGuid().ToString(), "Random")
 			};
 			var response = client.ExecuteOperations(new[] { new CreateCustomerOperation(session, customer) }, CancellationToken.None).Result;
+
+			Console.WriteLine($"Success: {response.Success}");
 
 			Console.WriteLine(session.SessionId);
 			Console.WriteLine(session.EndpointUri);

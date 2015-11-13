@@ -10,6 +10,17 @@ namespace Intacct.Entities
 		public string Name { get; set; }
 		public string ExternalId { get; set; }
 
+		/// <summary>
+		///		Create a new customer record.
+		/// </summary>
+		/// <param name="id"></param>
+		/// <param name="name"></param>
+		public IntacctCustomer(string id, string name)
+		{
+			Id = id;
+			Name = name;
+		}
+
 		public IntacctContact PrimaryContact { get; set; }
 
 		internal override XObject[] ToXmlElements()

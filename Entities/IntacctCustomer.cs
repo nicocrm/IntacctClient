@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace Intacct.Entities
@@ -34,7 +34,7 @@ namespace Intacct.Entities
 
 			if (PrimaryContact != null)
 			{
-				elements.Add(new XElement("primary", new XElement("contact", PrimaryContact.ToXmlElements())));
+				elements.Add(new XElement("primary", new XElement("contact", PrimaryContact.ToXmlElements().Cast<object>())));
 			}
 
 			return elements.ToArray();

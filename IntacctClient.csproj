@@ -37,13 +37,19 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\IntacctAccountLineItem.cs" />
     <Compile Include="Entities\IntacctAddress.cs" />
     <Compile Include="Entities\IntacctContact.cs" />
     <Compile Include="Entities\IntacctCustomer.cs" />
+    <Compile Include="Entities\IntacctDate.cs" />
+    <Compile Include="Entities\IntacctGeneralLedgerLineItem.cs" />
+    <Compile Include="Entities\IntacctInvoice.cs" />
+    <Compile Include="Entities\IntacctLineItemBase.cs" />
     <Compile Include="IIntacctServiceResponse.cs" />
     <Compile Include="IIntacctSession.cs" />
     <Compile Include="IntacctServiceException.cs" />
     <Compile Include="Operations\CreateCustomerOperation.cs" />
+    <Compile Include="Operations\CreateInvoiceOperation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ChildCompanyType.cs" />
     <Compile Include="Operations\GetApiSessionOperation.cs" />

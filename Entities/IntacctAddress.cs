@@ -14,7 +14,7 @@ namespace Intacct.Entities
 
 		internal override XObject[] ToXmlElements()
 		{
-			return new[]
+			return new XObject[]
 			{
 				new XElement("address1", Address1),
 				new XElement("address2", Address2),

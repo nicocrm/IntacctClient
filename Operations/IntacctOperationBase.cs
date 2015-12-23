@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Xml.Linq;
 
 namespace Intacct.Operations
@@ -46,13 +47,13 @@ namespace Intacct.Operations
 											 new XElement("function",
 														  new XAttribute("controlid", Id),
 														  new XElement(FunctionName,
-																	   CreateFunctionContents()))));
+																	   CreateFunctionContents().Cast<object>()))));
 		}
 
 		public IntacctOperationResult ProcessResult(XElement resultElement)
 		{
 			// check operation status
-			var success = resultElement.Element("status").Value == "success";
+			var success = resultElement.Element("status")?.Value == "success";
 			if (!success)
 			{
 				var errorMessageElement = resultElement.Element("errormessage");

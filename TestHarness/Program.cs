@@ -23,6 +23,8 @@ namespace TestHarness
 
 			var session = client.InitiateApiSession(userCredential).Result;
 
+			Console.WriteLine($"Session created, ID: {session.SessionId}, Endpoint: {session.EndpointUri}");
+
 			var customer = new IntacctCustomer("C0003", "MT Test " + Guid.NewGuid())
 			{
 				ExternalId = "1337",
@@ -30,10 +32,14 @@ namespace TestHarness
 			};
 			var response = client.ExecuteOperations(new[] { new CreateCustomerOperation(session, customer) }, CancellationToken.None).Result;
 
-			Console.WriteLine($"Success: {response.Success}");
+			Console.WriteLine($"Customer created: {response.Success}");
+			if (!response.Success) return;
 
-			Console.WriteLine(session.SessionId);
-			Console.WriteLine(session.EndpointUri);
+			var invoice = new IntacctInvoice(customer.Id, new IntacctDate(1, 1, 2015));
+			invoice.Items.Add(new IntacctAccountLineItem("TEST", 15));
+			response = client.ExecuteOperations(new[] { new CreateInvoiceOperation(session, invoice) }, CancellationToken.None).Result;
+
+			Console.WriteLine($"Invoice created: {response.Success}");
 		}
 
 		private static TestHarnessSettings LoadSettings()

@@ -10,9 +10,7 @@ namespace Intacct.Operations
 {
 	public class CreateInvoiceOperation : IntacctAuthenticatedOperationBase<string>
 	{
-		public CreateInvoiceOperation(IIntacctSession session, IntacctInvoice invoice) : base(session, "create_invoice", "key")
-		{
-		}
+		public CreateInvoiceOperation(IIntacctSession session, IntacctInvoice invoice) : base(session, "create_invoice", "key") {}
 
 		protected override XObject[] CreateFunctionContents()
 		{

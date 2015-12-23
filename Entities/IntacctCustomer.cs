@@ -26,11 +26,11 @@ namespace Intacct.Entities
 		internal override XObject[] ToXmlElements()
 		{
 			var elements = new List<XObject>
-			{
-				new XElement("customerid", Id),
-				new XElement("name", Name),
-				new XElement("externalid", ExternalId),
-			};
+				               {
+					               new XElement("customerid", Id),
+					               new XElement("name", Name),
+					               new XElement("externalid", ExternalId),
+				               };
 
 			if (PrimaryContact != null)
 			{

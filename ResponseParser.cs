@@ -24,14 +24,14 @@ namespace Intacct
 		public static IEnumerable<IntacctError> ParseErrors(XContainer errorMessage)
 		{
 			return errorMessage.Elements("error").Select(IntacctError.FromXml);
-        }
+		}
 
 		private static void ParseOperations(IntacctServiceResponse response, IEnumerable<IIntacctOperation> operations, IEnumerable<XElement> operationElements)
 		{
 			foreach (var operationElement in operationElements)
 			{
 				var authSuccess = operationElement.Element("authentication").Element("status").Value == "success";
-				if (! authSuccess)
+				if (!authSuccess)
 				{
 					var errorMessageElement = operationElement.Element("errormessage");
 					response.AddOperationResult(IntacctOperationAuthFailedResult.Create(ParseErrors(errorMessageElement)));
@@ -39,20 +39,19 @@ namespace Intacct
 				}
 
 				var opResponses = from resultElement in operationElement.Elements("result")
-								  let functionName = resultElement.Element("function").Value
-								  let controlId = resultElement.Element("controlid").Value
-								  join operation in operations on new { F = functionName, C = controlId } equals new { F = operation.FunctionName, C = operation.Id }
-								  select new
-								  {
-									  Operation = operation,
-									  Result = resultElement
-								  };
+				                  let functionName = resultElement.Element("function").Value
+				                  let controlId = resultElement.Element("controlid").Value
+				                  join operation in operations on new { F = functionName, C = controlId } equals new { F = operation.FunctionName, C = operation.Id }
+				                  select new
+					                         {
+						                         Operation = operation,
+						                         Result = resultElement
+					                         };
 				foreach (var operationAndResponse in opResponses)
 				{
 					var result = operationAndResponse.Operation.ProcessResult(operationAndResponse.Result);
 					response.AddOperationResult(result);
 				}
-
 			}
 		}
 

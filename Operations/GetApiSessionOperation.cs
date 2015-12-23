@@ -6,9 +6,7 @@ namespace Intacct.Operations
 {
 	public class GetApiSessionOperation : IntacctOperationBase<IntacctSession>
 	{
-		public GetApiSessionOperation(IntacctUserCredential cred) : base(cred, "getAPISession", "data")
-		{
-		}
+		public GetApiSessionOperation(IntacctUserCredential cred) : base(cred, "getAPISession", "data") {}
 
 		protected override IntacctOperationResult<IntacctSession> ProcessResponseData(XElement responseData)
 		{

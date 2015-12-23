@@ -34,5 +34,5 @@ namespace Intacct.Operations
 		{
 			return new IntacctOperationResult<T>(default(T)) { OperationSuccess = false, Errors = errors };
 		}
-    }
+	}
 }

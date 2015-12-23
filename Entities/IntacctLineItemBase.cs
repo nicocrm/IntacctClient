@@ -16,10 +16,10 @@ namespace Intacct.Entities
 		internal override XObject[] ToXmlElements()
 		{
 			return new XObject[]
-			{
-				GetAccountXmlElement(),
-				new XElement("amount", Amount), 
-			};
+				       {
+					       GetAccountXmlElement(),
+					       new XElement("amount", Amount),
+				       };
 		}
 	}
 }

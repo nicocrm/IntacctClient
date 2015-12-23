@@ -15,15 +15,15 @@ namespace Intacct.Entities
 		internal override XObject[] ToXmlElements()
 		{
 			return new XObject[]
-			{
-				new XElement("address1", Address1),
-				new XElement("address2", Address2),
-				new XElement("city", City),
-				new XElement("state", State),
-				new XElement("zip", Zip),
-				new XElement("country", Country),
-				new XElement("isocountrycode", IsoCountryCode),
-			};
+				       {
+					       new XElement("address1", Address1),
+					       new XElement("address2", Address2),
+					       new XElement("city", City),
+					       new XElement("state", State),
+					       new XElement("zip", Zip),
+					       new XElement("country", Country),
+					       new XElement("isocountrycode", IsoCountryCode),
+				       };
 		}
 	}
 }

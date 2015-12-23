@@ -27,11 +27,11 @@ namespace Intacct.Entities
 		internal override XObject[] ToXmlElements()
 		{
 			return new XObject[]
-			{
-				new XElement("customerid", CustomerId),
-				new XElement("datecreated", DateCreated.ToXmlElements().Cast<object>()),
-				new XElement("invoiceitems", Items.Select(item => new XElement("invoiceitem", item.ToXmlElements().Cast<object>()))), 
-			};
+				       {
+					       new XElement("customerid", CustomerId),
+					       new XElement("datecreated", DateCreated.ToXmlElements().Cast<object>()),
+					       new XElement("invoiceitems", Items.Select(item => new XElement("invoiceitem", item.ToXmlElements().Cast<object>()))),
+				       };
 		}
 	}
 }

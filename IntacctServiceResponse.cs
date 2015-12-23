@@ -18,7 +18,7 @@ namespace Intacct
 		internal static IntacctServiceResponse Failed => new IntacctServiceResponse { Success = false };
 		internal static IntacctServiceResponse Successful => new IntacctServiceResponse { Success = true };
 
-		private IntacctServiceResponse() { }
+		private IntacctServiceResponse() {}
 
 		internal void AddError(IntacctError error)
 		{

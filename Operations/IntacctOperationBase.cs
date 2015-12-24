@@ -47,7 +47,7 @@ namespace Intacct.Operations
 											 new XElement("function",
 														  new XAttribute("controlid", Id),
 														  new XElement(FunctionName,
-																	   CreateFunctionContents().Cast<object>()))));
+																	   CreateFunctionContents()?.Cast<object>()))));
 		}
 
 		public IntacctOperationResult ProcessResult(XElement resultElement)

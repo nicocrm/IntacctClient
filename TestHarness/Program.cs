@@ -25,18 +25,20 @@ namespace TestHarness
 
 			Console.WriteLine($"Session created, ID: {session.SessionId}, Endpoint: {session.EndpointUri}");
 
-			var customer = new IntacctCustomer("C0003", "MT Test " + Guid.NewGuid())
-			{
-				ExternalId = "1337",
-				PrimaryContact = new IntacctContact(Guid.NewGuid().ToString(), "Random")
-			};
+			var customer = new IntacctCustomer("C0010", "MT Test " + Guid.NewGuid())
+				               {
+					               ExternalId = "1337",
+					               PrimaryContact = new IntacctContact(Guid.NewGuid().ToString(), "Random")
+				               };
 			var response = client.ExecuteOperations(new[] { new CreateCustomerOperation(session, customer) }, CancellationToken.None).Result;
 
 			Console.WriteLine($"Customer created: {response.Success}");
 			if (!response.Success) return;
 
-			var invoice = new IntacctInvoice(customer.Id, new IntacctDate(1, 1, 2015));
-			invoice.Items.Add(new IntacctAccountLineItem("TEST", 15));
+			var invoice = new IntacctInvoice(customer.Id, new IntacctDate(1, 1, 2015), new IntacctDate(1, 1, 2015));
+			var lineItem = IntacctLineItem.CreateWithAccountNumber("2000", 15);
+			lineItem.Memo = "Services rendered";
+			invoice.Items.Add(lineItem);
 			response = client.ExecuteOperations(new[] { new CreateInvoiceOperation(session, invoice) }, CancellationToken.None).Result;
 
 			Console.WriteLine($"Invoice created: {response.Success}");

@@ -1,5 +1,8 @@
 # Change log
 
+## 0.3.1
+ - added "create invoice" operation
+
 ## 0.3.0
  - added constructors with required fields for Intacct entities
 

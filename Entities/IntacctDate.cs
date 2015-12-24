@@ -24,9 +24,9 @@ namespace Intacct.Entities
 		{
 			return new XObject[]
 			{
-				new XElement("day", Day), 
+				new XElement("year", Year),
 				new XElement("month", Month), 
-				new XElement("year", Year)
+				new XElement("day", Day), 
 			};
 		}
 	}

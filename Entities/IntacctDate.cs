@@ -9,6 +9,8 @@ namespace Intacct.Entities
 		public int Month { get; }
 		public int Year { get; }
 
+		public IntacctDate(DateTime date) : this(date.Day, date.Month, date.Year) {}
+
 		public IntacctDate(int day, int month, int year)
 		{
 			if (month <= 0 || month > 12) throw new ArgumentOutOfRangeException(nameof(month));

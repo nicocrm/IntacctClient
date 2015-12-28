@@ -1,5 +1,8 @@
 # Change log
 
+## 0.3.2
+ - added convenience contructor for IntacctDate that takes a DateTime value
+
 ## 0.3.1
  - added "create invoice" operation
 

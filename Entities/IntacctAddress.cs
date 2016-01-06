@@ -1,4 +1,5 @@
 ﻿using System.Xml.Linq;
+using Intacct.Infrastructure;
 
 namespace Intacct.Entities
 {
@@ -11,6 +12,17 @@ namespace Intacct.Entities
 		public string Zip { get; set; }
 		public string Country { get; set; }
 		public string IsoCountryCode { get; set; }
+
+		public IntacctAddress(XElement data)
+		{
+			this.SetPropertyValue(x => Address1, data);
+			this.SetPropertyValue(x => Address2, data);
+			this.SetPropertyValue(x => City, data);
+			this.SetPropertyValue(x => State, data);
+			this.SetPropertyValue(x => Zip, data);
+			this.SetPropertyValue(x => Country, data);
+			this.SetPropertyValue(x => IsoCountryCode, data);
+		}
 
 		internal override XObject[] ToXmlElements()
 		{

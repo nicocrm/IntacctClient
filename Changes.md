@@ -1,5 +1,8 @@
 # Change log
 
+## 0.3.5
+ - added ability to retrieve entities via the `GetEntityOperation<TEntity>` class
+
 ## 0.3.2
  - added convenience contructor for IntacctDate that takes a DateTime value
 

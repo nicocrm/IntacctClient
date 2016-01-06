@@ -1,14 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using Intacct.Infrastructure;
 
 namespace Intacct.Entities
 {
+	[IntacctName("customer")]
 	public class IntacctCustomer : IntacctObject
 	{
+		[IntacctName("customerid")]
 		public string Id { get; set; }
 		public string Name { get; set; }
 		public string ExternalId { get; set; }
+
+		public IntacctContact PrimaryContact { get; set; }
 
 		/// <summary>
 		///		Create a new customer record.
@@ -21,7 +26,18 @@ namespace Intacct.Entities
 			Name = name;
 		}
 
-		public IntacctContact PrimaryContact { get; set; }
+		public IntacctCustomer(XElement data)
+		{
+			this.SetPropertyValue(x => Id, data);
+			this.SetPropertyValue(x => Name, data);
+			this.SetPropertyValue(x => ExternalId, data, isOptional: true);
+
+			var primaryContactElement = data.Element("primary");
+			if (primaryContactElement != null && primaryContactElement.HasElements)
+			{
+				PrimaryContact = new IntacctContact(primaryContactElement);
+			}
+		}
 
 		internal override XObject[] ToXmlElements()
 		{

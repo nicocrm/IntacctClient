@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Linq;
 using System.Xml.Linq;
+using Intacct.Infrastructure;
 
 namespace Intacct.Entities
 {
 	public class IntacctContact : IntacctObject
 	{
+		[IntacctName("contactname")]
 		public string Name { get; set; }
 		public string PrintAs { get; set; }
 
@@ -35,9 +38,35 @@ namespace Intacct.Entities
 			PrintAs = printAs;
 		}
 
+		public IntacctContact(XElement data)
+		{
+			this.SetPropertyValue(x => Name, data);
+			this.SetPropertyValue(x => PrintAs, data, isOptional: true);
+			this.SetPropertyValue(x => Prefix, data, isOptional: true);
+			this.SetPropertyValue(x => FirstName, data, isOptional: true);
+			this.SetPropertyValue(x => LastName, data, isOptional: true);
+			this.SetPropertyValue(x => Initial, data, isOptional: true);
+			this.SetPropertyValue(x => Phone1, data, isOptional: true);
+			this.SetPropertyValue(x => Phone2, data, isOptional: true);
+			this.SetPropertyValue(x => CellPhone, data, isOptional: true);
+			this.SetPropertyValue(x => Pager, data, isOptional: true);
+			this.SetPropertyValue(x => Fax, data, isOptional: true);
+			this.SetPropertyValue(x => Email1, data, isOptional: true);
+			this.SetPropertyValue(x => Email2, data, isOptional: true);
+			this.SetPropertyValue(x => Url1, data, isOptional: true);
+			this.SetPropertyValue(x => Url2, data, isOptional: true);
+			this.SetPropertyValue(x => Status, data, isOptional: true);
+
+			var mailAddressElement = data.Element("mailaddress");
+			if (mailAddressElement != null)
+			{
+				MailAddress = new IntacctAddress(mailAddressElement);
+			}
+		}
+
 		internal override XObject[] ToXmlElements()
 		{
-			return new[]
+			return new XObject[]
 			{
 				new XElement("contactname", Name),
 				new XElement("printas", PrintAs),
@@ -55,7 +84,7 @@ namespace Intacct.Entities
 				new XElement("url1", Url1),
 				new XElement("url2", Url2),
 				new XElement("status", Status),
-				new XElement("mailaddress", MailAddress?.ToXmlElements()),
+				new XElement("mailaddress", MailAddress?.ToXmlElements().Cast<object>()),
 			};
 		}
 	}

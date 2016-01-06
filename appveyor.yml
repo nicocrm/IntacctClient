@@ -1,5 +1,7 @@
 configuration: Release
 
+skip_non_tags: true
+
 install:
   - cmd: appveyor DownloadFile https://dist.nuget.org/win-x86-commandline/latest/nuget.exe
   - cmd: nuget install GitVersion.CommandLine -SolutionDir %APPVEYOR_BUILD_FOLDER% -Verbosity quiet -ExcludeVersion -pre

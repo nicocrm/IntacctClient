@@ -19,14 +19,16 @@ namespace Intacct.Operations
 		private readonly IntacctUserCredential _userCredential;
 		private readonly IIntacctSession _session;
 		private readonly string _resultElementName;
+		private readonly bool _mayHaveEmptyResult;
 
 		public string FunctionName { get; }
 		public string Id { get; } = Guid.NewGuid().ToString();
 
-		private IntacctOperationBase(string functionName, string resultElementName)
+		private IntacctOperationBase(string functionName, string resultElementName, bool mayHaveEmptyResult = false)
 		{
 			FunctionName = functionName;
 			_resultElementName = resultElementName;
+			_mayHaveEmptyResult = mayHaveEmptyResult;
 		}
 
 		protected IntacctOperationBase(IntacctUserCredential userCredential, string functionName, string resultElementName) : this(functionName, resultElementName)
@@ -34,7 +36,7 @@ namespace Intacct.Operations
 			_userCredential = userCredential;
 		}
 
-		protected IntacctOperationBase(IIntacctSession session, string functionName, string resultElementName) : this(functionName, resultElementName)
+		protected IntacctOperationBase(IIntacctSession session, string functionName, string resultElementName, bool mayHaveEmptyResult) : this(functionName, resultElementName, mayHaveEmptyResult)
 		{
 			_session = session;
 		}
@@ -63,6 +65,9 @@ namespace Intacct.Operations
 			// parse data
 			var dataElement = resultElement.Element(_resultElementName);
 			if (dataElement != null) return ProcessResponseData(dataElement);
+
+			// if OK to have an empty result, return default value
+			if (_mayHaveEmptyResult) return new IntacctOperationResult<T>(default(T));
 
 			throw new Exception($"Element {_resultElementName} was not found in response.");
 		}

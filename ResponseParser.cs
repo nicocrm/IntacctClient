@@ -5,9 +5,9 @@ using Intacct.Operations;
 
 namespace Intacct
 {
-	internal class ResponseParser
+	internal static class ResponseParser
 	{
-		public static IntacctServiceResponse Parse(XDocument doc, IEnumerable<IIntacctOperation> operations)
+		public static IntacctServiceResponse Parse(XDocument doc, ICollection<IIntacctOperation> operations)
 		{
 			var control = doc.Descendants("control");
 			var success = control.Elements("status").Single().Value == "success";
@@ -26,11 +26,11 @@ namespace Intacct
 			return errorMessage.Elements("error").Select(IntacctError.FromXml);
 		}
 
-		private static void ParseOperations(IntacctServiceResponse response, IEnumerable<IIntacctOperation> operations, IEnumerable<XElement> operationElements)
+		private static void ParseOperations(IntacctServiceResponse response, ICollection<IIntacctOperation> operations, IEnumerable<XElement> operationElements)
 		{
 			foreach (var operationElement in operationElements)
 			{
-				var authSuccess = operationElement.Element("authentication").Element("status").Value == "success";
+				var authSuccess = operationElement.Element("authentication")?.Element("status")?.Value == "success";
 				if (!authSuccess)
 				{
 					var errorMessageElement = operationElement.Element("errormessage");
@@ -39,8 +39,8 @@ namespace Intacct
 				}
 
 				var opResponses = from resultElement in operationElement.Elements("result")
-				                  let functionName = resultElement.Element("function").Value
-				                  let controlId = resultElement.Element("controlid").Value
+				                  let functionName = resultElement.Element("function")?.Value
+				                  let controlId = resultElement.Element("controlid")?.Value
 				                  join operation in operations on new { F = functionName, C = controlId } equals new { F = operation.FunctionName, C = operation.Id }
 				                  select new
 					                         {

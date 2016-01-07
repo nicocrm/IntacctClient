@@ -1,5 +1,9 @@
 # Change log
 
+## 0.4.0
+ - enabled operations to return empty (null) results, where appropriate
+ - public API surface cleanup
+
 ## 0.3.5
  - added ability to retrieve entities via the `GetEntityOperation<TEntity>` class
 

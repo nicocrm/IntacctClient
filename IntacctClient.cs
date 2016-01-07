@@ -25,40 +25,34 @@ namespace Intacct
 			_serviceCredential = serviceCredential;
 		}
 
-		public virtual async Task<IIntacctSession> InitiateApiSession(IntacctUserCredential cred)
+		public async Task<IIntacctSession> InitiateApiSession(IntacctUserCredential cred)
 		{
 			return await InitiateApiSession(cred, CancellationToken.None);
 		}
 
-		public virtual async Task<IIntacctSession> InitiateApiSession(IntacctUserCredential cred, CancellationToken token)
+		public async Task<IIntacctSession> InitiateApiSession(IntacctUserCredential cred, CancellationToken token)
 		{
 			var operation = new GetApiSessionOperation(cred);
 
-			using (var requestStream = new MemoryStream())
-			{
-				// construct and execute request
-				var operations = new[] { operation };
-				var response = await ExecuteOperations(operations, token);
+			// construct and execute request
+			var operations = new[] { operation };
+			var response = await ExecuteOperations(operations, token);
 
-				// expecting a single operation result (more or less is a problem)
-				var result = response.OperationResults.OfType<IntacctOperationResult<IntacctSession>>().SingleOrDefault();
-				if (result == null)
-				{
-					// let's see what the result is
-					var badResult = response.OperationResults.FirstOrDefault();
-					if (badResult == null) throw new Exception("Unable to initiate API session, and no results were captured.");
+			// expecting a single operation result (more or less is a problem)
+			var result = response.OperationResults.OfType<IntacctOperationResult<IntacctSession>>().SingleOrDefault();
+			if (result != null) return result.Value;
 
-					var authError = badResult as IntacctOperationAuthFailedResult;
-					if (authError != null) throw new Exception($"Unable to initiate API session, authentication failed. Service error: {authError.Errors.Select(e => e.ToString()).Aggregate((curr, next) => curr + " " + next)}");
+			// let's see what the result is
+			var badResult = response.OperationResults.FirstOrDefault();
+			if (badResult == null) throw new Exception("Unable to initiate API session, and no results were captured.");
 
-					throw new Exception($"Unable to initiate API session, unexpected result type {badResult.GetType().Name}.");
-				}
+			var authError = badResult as IntacctOperationAuthFailedResult;
+			if (authError != null) throw new Exception($"Unable to initiate API session, authentication failed. Service error: {authError.Errors.Select(e => e.ToString()).Aggregate((curr, next) => curr + " " + next)}");
 
-				return result.Value;
-			}
+			throw new Exception($"Unable to initiate API session, unexpected result type {badResult.GetType().Name}.");
 		}
 
-		public virtual async Task<IIntacctServiceResponse> ExecuteOperations(IEnumerable<IIntacctOperation> operations, CancellationToken token)
+		public async Task<IIntacctServiceResponse> ExecuteOperations(ICollection<IIntacctOperation> operations, CancellationToken token)
 		{
 			using (var requestStream = new MemoryStream())
 			{
@@ -98,16 +92,15 @@ namespace Intacct
 		private static XElement GetControlElement(NetworkCredential serviceCredential, string requestId)
 		{
 			var control = new XElement("control",
-			                       new XElement("senderid", serviceCredential.UserName),
-			                       new XElement("password", serviceCredential.Password),
-			                       new XElement("controlid", requestId),
-								   new XElement("uniqueid", "false"),
-								   new XElement("dtdversion", "3.0"));
-
+			                           new XElement("senderid", serviceCredential.UserName),
+			                           new XElement("password", serviceCredential.Password),
+			                           new XElement("controlid", requestId),
+			                           new XElement("uniqueid", "false"),
+			                           new XElement("dtdversion", "3.0"));
 			return control;
 		}
 
-		private async Task<IIntacctServiceResponse> ExecuteRequest(Stream requestStream, IEnumerable<IIntacctOperation> operations, CancellationToken token, Uri uri = null)
+		private async Task<IIntacctServiceResponse> ExecuteRequest(Stream requestStream, ICollection<IIntacctOperation> operations, CancellationToken token, Uri uri = null)
 		{
 			uri = uri ?? _apiUri;
 			

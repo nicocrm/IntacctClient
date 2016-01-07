@@ -26,7 +26,7 @@ namespace TestHarness
 			Console.WriteLine($"Session created, ID: {session.SessionId}, Endpoint: {session.EndpointUri}");
 
 			// create customer
-			var customer = new IntacctCustomer("C0019", "MT Test " + Guid.NewGuid())
+			var customer = new IntacctCustomer("C0021", "MT Test " + Guid.NewGuid())
 				               {
 					               ExternalId = "1337",
 					               PrimaryContact = new IntacctContact(Guid.NewGuid().ToString(), "Random")

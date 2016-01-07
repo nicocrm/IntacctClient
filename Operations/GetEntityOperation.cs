@@ -12,7 +12,7 @@ namespace Intacct.Operations
 		private readonly string _entityId;
 		private readonly bool _isExtenalKey;
 
-		public GetEntityOperation(IIntacctSession session, string entityId, bool isExtenalKey = false) : base(session, "get", "data")
+		public GetEntityOperation(IIntacctSession session, string entityId, bool isExtenalKey = false) : base(session, "get", "data", mayHaveEmptyResult: true)
 		{
 			if (entityId == null) throw new ArgumentNullException(nameof(entityId));
 			if (string.IsNullOrWhiteSpace(entityId)) throw new ArgumentException($"Argument {nameof(entityId)} may not be empty.", nameof(entityId));
